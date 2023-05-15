@@ -1,0 +1,142 @@
+﻿@model WebCarteiraMvc.ObjetosDeValor.ModelParaViewPessoa
+
+
+
+
+@{
+    ViewData["Title"] = "Usuários";
+    string nome = string.Empty;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+           
+<div class="mb-2" >
+    <div>
+        <button asp-for type="button" class="btn btn-dark mb-2" data-toggle="modal" data-target="#exampleModalCenter">Create</button>
+    </div>
+    <form class="col-5 d-flex" asp-action="PesquisaFiltro" method="get" asp-route-nome="@nome" >
+        <div class="input-group">
+            <input asp-for="Nome"  type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Criar uma nova pessoa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" method="post">
+                <div class="modal-body">
+                    <div>
+                        <label>Usuário</label>
+                        <input  asp-for="Nome" type="text" class="form-control rounded" placeholder="Digite o nome da pessoa" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label>E-mail</label>
+                        <input asp-for=Email name="Email" type="text" class="form-control rounded" placeholder="Digite um e-mail válido"/>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label>Senha</label>
+                        <input asp-for=Senha name="Senha" type="text" class="form-control rounded" placeholder="Digite uma senha válida" />
+                        <span asp-validation-for="Senha" value="" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label>Salário</label>
+                        <input asp-for="Salario" name="Salario" type="text" class="form-control rounded" placeholder="Digite o salário" value="" />
+                        <span asp-validation-for="Salario" class="text-danger"></span>
+                    </div>
+                    <div>
+                    <label>Limite</label>
+                        <input asp-for="Limite" name="Limite" type="text" class="form-control rounded" placeholder="Digite um limite" value="" />
+                        <span asp-validation-for="Limite" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label>Mínimo</label>
+                        <input asp-for="Minimo" name="Minimo" type="text" class="form-control rounded" placeholder="Digite um mínimo" value="" />
+                        <span asp-validation-for="Minimo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr class="bg-dark">
+            <th class="text-center" style="color:whitesmoke">
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th class="text-center" style="color:whitesmoke">
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th class="text-center" style="color:whitesmoke">
+                @Html.DisplayNameFor(model => model.Salario)
+            </th>
+            <th class="text-center" style="color:whitesmoke">
+                @Html.DisplayNameFor(model => model.Limite)
+            </th>
+            <th class="text-center" style="color:whitesmoke">
+                @Html.DisplayNameFor(model => model.Minimo)
+            </th>
+            <th class="text-center" style="color:whitesmoke">
+                @Html.DisplayNameFor(model => model.Saldo)
+            </th>
+            <th class="text-center" style="color:whitesmoke">
+                Options
+            </th>
+        </tr>
+    </thead>
+    <tbody class="shadow-lg">
+        @foreach (var item in Model.Pessoa)         {
+            <tr style="background-color:aliceblue">
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Salario)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Limite)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Minimo)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Saldo)
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    } 
+}
+
+
+

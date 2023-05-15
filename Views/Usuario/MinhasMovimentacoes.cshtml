@@ -1,0 +1,61 @@
+﻿@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor contxt;
+@model WebCarteiraMvc.ObjetosDeValor.ModeloParaViewMov
+
+@{
+    Layout = "_LayoutUsuario";
+    var usuarioLogado = JsonSerializer.Deserialize<Pessoa>(contxt.HttpContext.Session.GetString("User"));
+    Layout = "_LayoutUsuario";
+    if (usuarioLogado.Id == 1)
+    {
+        Layout = "_Layout";
+    }
+
+    <form>
+        <div class="col-3">
+            <button asp-action="GerarPdf" type="submit" class="btn btn-info mb-2 mt-2">Gerar PDF</button>
+        </div>
+    </form>
+
+    <table id="relatorio" class="table table-striped table-hover">
+        <thead>
+            <tr class="bg-dark">
+                <th class="text-center" style="color:whitesmoke">
+                    Tipo da Movimentação
+                </th>
+                <th class="text-center" style="color:whitesmoke">
+                    Valor
+                </th>
+                <th class="text-center" style="color:whitesmoke">
+                    Descrição
+                </th>
+                <th class="text-center" style="color:whitesmoke">
+                    Data
+                </th>
+                <th class="text-center" style="color:whitesmoke">
+                </th>
+            </tr>
+        </thead>
+        <tbody class="shadow-lg">
+            @foreach (var item in Model.ModeloParaMov)
+            {
+                <tr style="background-color:aliceblue">
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.TipoMovimentacao)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Valor)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Descricao)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Data)
+                    </td>
+                    <td class="text-center">
+                    </td>
+                </tr>
+            }
+    </table>
+}

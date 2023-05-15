@@ -1,0 +1,75 @@
+﻿@model WebCarteiraMvc.Models.Pessoa;
+@{
+    Layout = "_LayoutPreLogin";
+    ViewData["Title"] = "Home Page";
+
+}
+
+<section>
+
+    <form>
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-start align-items-center h-100">
+                <div class="col-4 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                        <div class="card-body bg-white p-5 text-center">
+                            <h3 class="mb-5">Sign in</h3>
+                            <div class="form-group mb-4">
+
+                                <label class="form-label" for="typeEmailX-2">Email</label>
+                                <input asp-for="Email" type="email" id="typeEmailX-2" class="form-control form-control-lg" />
+                            </div>
+
+                            <div class="form-outline-white mb-4">
+                                <label class="form-label" for="typePasswordX-2">Password</label>
+                                <input asp-for="Senha" type="password" id="typePasswordX-2" class="form-control form-control-lg" />
+                            </div>
+                            @*
+
+                                <!-- Checkbox -->
+                                <div class="form-check d-flex justify-content-start mb-4">
+                                <input class="form-check-input" type="checkbox" value="" id="form1Example3" />
+                                <label class="form-check-label" for="form1Example3"> Remember password </label>
+                                </div>
+                            *@
+                            <button asp-action="Logar" class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                            <div class="col mt-4">
+                                <!-- Simple link -->
+                                <a data-toggle="modal" data-target="#exampleModalCenter">Esqueci minha senha</a>
+                            </div>
+                            <hr class="my-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Recuperação de senha</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="container">
+                        <div>
+                            <label class="form-label">Email</label>
+                        </div>
+                        <div>
+                            <input name="email" type="text" class="form-control rounded" placeholder="Digite seu e-mail" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button asp-action="ResetPassword" type="submit" class="btn btn-primary">Enviar email</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

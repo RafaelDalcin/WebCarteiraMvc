@@ -1,0 +1,167 @@
+﻿@using System.Text.Json;
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor contxt;
+
+@model WebCarteiraMvc.Models.Pessoa;
+@{
+    var usuarioLogado = JsonSerializer.Deserialize<Pessoa>(contxt.HttpContext.Session.GetString("User"));
+    Layout = "_LayoutUsuario";
+    if (usuarioLogado.Id == 1)
+    {
+        Layout = "_Layout";
+    }
+}
+
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-6 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong">
+                <div class="card-body bg-white p-5 text-center">
+                    <div class="container mb-2">
+                        <div class="row">
+                            <h2>Minha conta <i class="bi bi-person-circle text-info" data-bind=""></i></h2>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row mb-2">
+                            <div class="col-3 col label form-label">
+                                <label>Nome <i class="bi bi-person text-info"></i></label>
+                            </div>
+                            <div class="col-9 col input">
+                                <input id="nome" class="rounded form-control form-control-lg" disabled type="text" value="@Model.Nome" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3 col label form-label">
+                                <label>E-mail <i class="bi bi-envelope-at text-info"></i></label>
+                            </div>
+                            <div class="col-9 col input">
+                                <input id="email" class="rounded form-control form-control-lg" disabled type="text" value="@Model.Email" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3 col label form-label">
+                                <label>Senha <i class="bi bi-lock text-info"></i></label>
+                            </div>
+                            <div class="col-9 col input">
+                                <input id="senha" class="rounded form-control form-control-lg" disabled type="password" value="@Model.Senha" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 d-grid gap-1">
+                                <button id="edit" type="button" data-toggle-form-edit="#form" class="btn btn-info"> Editar <i class="bi bi-pencil-square"></i> </button>
+                            </div>
+                            <div class="col-6 d-grid gap-1">
+                                <button id="save" type="button" data-toggle-form-edit="#form" class="btn btn-success"> Salvar <i class="bi bi-check-lg"></i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-8 col-lg-6 col-xl-5">
+            <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                <div class="card-body bg-white p-5 text-center">
+                    <div class="container mb-2">
+                        <div class="row">
+                            <h2>Fazer movimentação <i class="bi bi-bank text-info"></i></h2>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row mb-4 mt-4">
+                            <div class="label form-label">
+                                <label>Saldo <i class="bi bi-currency-dollar text-info"></i></label>
+                            </div>
+                            <div class="col-12 col input">
+                                <input id="saldo" class="rounded form-control form-control-lg" readonly type="text" value="R$ @Model.Saldo"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-grid gap-2">
+                                <button id="criarTransacao" type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-success"> Fazer transação <i class="bi bi-currency-dollar">+</i> </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Movimentação</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="CriarTransacao" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <div class="label form-label">
+                        <label>Valor <i class="bi bi-currency-dollar text-info"></i></label>
+                    </div>
+                    <div class="col-12 col input">
+                        <input name="valor" id="valor" class="rounded form-control form-control-lg" type="text"  placeholder="Digite um valor" value="" />
+                    </div>
+                    <div class="label form-label">
+                        <label>Tipo da movimentação<i class="bi bi-chat-left text-info"></i></label>
+                    </div>
+                    <div>
+                    <select name="tipoMovimentacao" class="form-select" aria-label="Selecione o tipo da movimentação" id="tipoMov">
+                        <option value=1>Entrada</option>
+                        <option value=2>Saida</option>
+                    </select>
+                    </div>
+                    <div class="label form-label">
+                        <label>Descrição <i class="bi bi-chat-left text-info"></i></label>
+                    </div>
+                    <div class="col-12 col input">
+                        <input name="descricao" id="descricao" class="rounded form-control form-control-lg" type="text" placeholder="Digite uma descrição" value="" />
+                    </div>
+                </div>
+                <div class="modal-footer"> 
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Enviar transação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+
+
+        $(document).ready(function () {
+            let tipoMov;
+            $("#edit").click(function () {
+                $("input").prop('disabled', false);
+                $("#senha").prop('type', 'text');
+            });
+            $("#save").click(function () {
+                $("#nome").prop('disabled', true);
+                $("#email").prop('disabled', true);
+                $("#senha").prop('disabled', true);
+                $("#senha").prop('type', 'password');
+                $.ajax({
+                    type: "POST",
+                    url: "Usuario/Edit",
+                    data: {
+                        id: @Model.Id,
+                        senha: document.querySelector("#senha").value,
+                        nome: document.querySelector("#nome").value,
+                        email: document.querySelector("#email").value
+                    },
+                    dataType: "json",
+                })
+            });
+        });
+
+
+    </script>
+}
